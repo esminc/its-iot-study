@@ -11,8 +11,8 @@ var event = new EventEmitter;
 
 camera.on('ready', function() {
   console.info("Camera Ready!!");
-  camera.setResolution('qqvga', function(err){
-    console.log("setResolution qqvga");
+  camera.setResolution('qvga', function(err){
+    console.log("setResolution qvga");
     if(err) throw 'setting camera resolution failed!';
     event.emit('camera:ready');
   });
@@ -23,6 +23,7 @@ event.on('camera:ready', function() {
   server = http.createServer(function (req, res) {
     event.emit('http:request', req, res);
   });
+  console.log("**** server listen");
   server.listen(80);
 });
 
@@ -47,6 +48,7 @@ event.on('http:request', function(req, res) {
     res.write(errorpage(), 'utf8');
     res.end();
   }
+  console.log("**** server listen");
   server.listen(80);
 });
 
@@ -58,7 +60,7 @@ event.on('camera:takePicture', function() {
     image = data;
     setTimeout(function(){
       event.emit('camera:takePicture');
-    }, 100);
+    }, 500);
   });
 });
 
@@ -79,7 +81,7 @@ function reloadScript() {
               "$('#photo').on('load', function() {"+
                 "setTimeout(function(){ "+
                   "$('#photo').attr('src', './photo.jpg?dl='+(+new Date())); "+
-                "}, 200);"+
+                "}, 1000);"+
               "});"+
             "});"+
           "</script>";
@@ -93,7 +95,7 @@ function body(content) {
 
 }
 function homepage() {
-  return body("<h1>What are you looking at?</h1><img id='photo' src='./photo.jpg?dl="+(+new Date())+"' alt='sneaky'><a href='./'>Reload</a>");
+  return body("<h1>What are you looking at?</h1><img id='photo' src='./photo.jpg?dl="+(+new Date())+"' alt='photo'><a href='./'>Reload</a>");
 }
 function errorpage() {
   return body("<p>These are not the droids you are looking for</p>")
