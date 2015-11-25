@@ -9,3 +9,6 @@
  - ArduinoIDEの使い方が分からず悩む
  - Y'UNの名前を変更したためURLが変わる
 
+- 白いLEDが燦然と輝くも、光らせているのは赤い方
+![Lチカ](https://github.com/esminc/its-iot-study/blob/master/doc/image/Lchika.JPG?raw=true)
+
