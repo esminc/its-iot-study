@@ -1,0 +1,26 @@
+<!DOCTYPE html> 
+<html>
+  <head></head>
+  <body>
+    <h1>Web Camera Socket.io Example</h1>
+    <canvas id="image" width="320" height="240"></canvas>
+  </body>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript">
+    var ctx = document.getElementById('image').getContext('2d');
+    var connection = new WebSocket("ws://"+window.location.hostname+":8080")
+    connection.onopen = function () {
+      console.log("Connection opened");
+    }
+    connection.onmessage = function (event) {
+      if(event && event.data) {
+        var info = JSON.parse(event.data);
+        if (info.image) {
+          var img = new Image();
+          img.src = 'data:image/jpeg;base64,' + info.buffer;
+          ctx.drawImage(img, 0, 0);
+        }
+      }
+    }
+  </script>
+</html>
