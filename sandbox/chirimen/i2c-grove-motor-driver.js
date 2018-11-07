@@ -1,4 +1,4 @@
-const GroveMotorDriver = function(i2cPort, slaveAddress) {
+const SteppingMotor = function(i2cPort, slaveAddress) {
   this.i2cPort = i2cPort;
   this.i2cSlave = null;
   this.slaveAddress = slaveAddress;
@@ -42,7 +42,7 @@ SteppingMotor.prototype = {
     return new Promise((resolve, reject) => {
       this.i2cPort.open(this.slaveAddress).then(
         async i2cSlave => {
-          await delayMicroseconds(10000);
+          await this.delayMicroseconds(10000);
           this.i2cSlave = i2cSlave;
           // Set default frequence to F_3921Hz
           await this.frequence(SteppingMotor.F_3921Hz);
@@ -182,11 +182,11 @@ SteppingMotor.prototype = {
         reject("i2cSlave Address does'nt yet open!");
       } else {
         await this.i2cSlave.write16(SteppingMotor.MotorSpeedSet, this._speed1 * 0x100 + this._speed2);
-        await delayMicroseconds(4000);
+        await this.delayMicroseconds(4000);
 
         if (_type == 1) {
           if (_direction == 1) {				// 2 phase motor
-            for (int i=0; i<_step; i++) {
+            for (var i=0; i<_step; i++) {
               await this.direction(0b0001);
               await this.direction(0b0101);
               await this.direction(0b0100);
@@ -198,7 +198,7 @@ SteppingMotor.prototype = {
             }
           }
           else if (_direction == -1) {
-            for (int i=0; i<_step; i++) {
+            for (var i=0; i<_step; i++) {
               await this.direction(0b1000);
               await this.direction(0b1010);
               await this.direction(0b0010);
@@ -213,7 +213,7 @@ SteppingMotor.prototype = {
         else if (_type == 0)
         {
           if (_direction == 1) {				// 4 phase motor
-            for (int i=0; i<_step; i++) {
+            for (var i=0; i<_step; i++) {
               await this.direction(0b0001);
               await this.direction(0b0011);
               await this.direction(0b0010);
@@ -225,7 +225,7 @@ SteppingMotor.prototype = {
             }
           }
           else if (_direction == -1) {
-            for (int i=0; i<_step; i++) {
+            for (var i=0; i<_step; i++) {
               await this.direction(0b1000);
               await this.direction(0b1100);
               await this.direction(0b0100);
