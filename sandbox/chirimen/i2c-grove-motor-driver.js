@@ -65,7 +65,7 @@ SteppingMotor.prototype = {
       if (this.i2cSlave == null) {
         reject("i2cSlave Address does'nt yet open!");
       } else {
-        await this.i2cSlave.write16(SteppingMotor.DirectionSet, _direction * 0x100 + SteppingMotor.Nothing);
+        await this.i2cSlave.write16(SteppingMotor.DirectionSet, _direction + SteppingMotor.Nothing * 0x100);
         await this.delayMicroseconds(4000);
         resolve();
       }
@@ -117,7 +117,7 @@ SteppingMotor.prototype = {
         if (this._M1_direction == -1 && this._M2_direction == 1) await this.direction(SteppingMotor.M1ACWM2CW);
         if (this._M1_direction == -1 && this._M2_direction == -1) await this.direction(SteppingMotor.BothAntiClockWise);
         // send command
-        await this.i2cSlave.write16(SteppingMotor.MotorSpeedSet, this._speed1 * 0x100 + this._speed2);
+        await this.i2cSlave.write16(SteppingMotor.MotorSpeedSet, this._speed1 + this._speed2 * 0x100);
         await delayMicroseconds(4000);
         resolve();
       }
@@ -134,7 +134,7 @@ SteppingMotor.prototype = {
       } else if (_frequence < SteppingMotor.F_31372Hz || _frequence > SteppingMotor.F_30Hz) {
         reject("frequence error! Must be F_31372Hz, F_3921Hz, F_490Hz, F_122Hz, F_30Hz");
       } else {
-        await this.i2cSlave.write16(SteppingMotor.PWMFrequenceSet, _frequence * 0x100 + SteppingMotor.Nothing);
+        await this.i2cSlave.write16(SteppingMotor.PWMFrequenceSet, _frequence + SteppingMotor.Nothing * 0x100);
         await this.delayMicroseconds(4000);
         resolve();
       }
@@ -181,7 +181,7 @@ SteppingMotor.prototype = {
       if (this.i2cSlave == null) {
         reject("i2cSlave Address does'nt yet open!");
       } else {
-        await this.i2cSlave.write16(SteppingMotor.MotorSpeedSet, this._speed1 * 0x100 + this._speed2);
+        await this.i2cSlave.write16(SteppingMotor.MotorSpeedSet, this._speed1 + this._speed2 * 0x100);
         await this.delayMicroseconds(4000);
 
         if (_type == 1) {
